@@ -25,12 +25,18 @@ public class CameraController : MonoBehaviour
     [Tooltip("Camera Y rotation limits. The X axis is the maximum it can go up and the Y axis is the maximum it can go down.")]
     public Vector2 cameraLimit = new Vector2(-45, 40);
 
-    float mouseX;
-    float mouseY;
+    //float mouseX;
+    //float mouseY;
     float offsetDistanceY;
 
     Transform player;
-
+    [Header("摄像机移动限制区域")]
+    public float minX = -10f;
+    public float maxX = 10f;
+    public float minZ = -10f;
+    public float maxZ = 10f;
+    public float followSpeed = 5f;
+    private Vector3 currentVelocity;
     void Start()
     {
 
@@ -47,14 +53,28 @@ public class CameraController : MonoBehaviour
     }
 
 
-    void Update()
+    void LateUpdate()
     {
 
         // Follow player - camera offset
-        transform.position = player.position + new Vector3(0, offsetDistanceY, 0);
+        //transform.position = player.position + new Vector3(0, offsetDistanceY, 0);
+        Vector3 targetPosition = player.position + new Vector3(0, offsetDistanceY, 0);
+        Vector3 newPosition = transform.position;
 
+        // X方向只在没超出边界时跟随
+        if (targetPosition.x >= minX && targetPosition.x <= maxX)
+            newPosition.x = targetPosition.x;
+
+        // Z方向只在没超出边界时跟随
+        if (targetPosition.z >= minZ && targetPosition.z <= maxZ)
+            newPosition.z = targetPosition.z;
+
+        // Y方向始终跟随（通常是摄像机高度）
+        newPosition.y = Mathf.SmoothDamp(transform.position.y, targetPosition.y, ref currentVelocity.y, 1 / followSpeed);
+
+        transform.position = newPosition;
         // Set camera zoom when mouse wheel is scrolled
-        if( canZoom && Input.GetAxis("Mouse ScrollWheel") != 0 )
+        if ( canZoom && Input.GetAxis("Mouse ScrollWheel") != 0 )
             Camera.main.fieldOfView -= Input.GetAxis("Mouse ScrollWheel") * sensitivity * 2;
         // You can use Mathf.Clamp to set limits on the field of view
 
@@ -64,12 +84,12 @@ public class CameraController : MonoBehaviour
                 return;
             
         // Calculate new position
-        mouseX += Input.GetAxis("Mouse X") * sensitivity;
-        mouseY += Input.GetAxis("Mouse Y") * sensitivity;
+        //mouseX += Input.GetAxis("Mouse X") * sensitivity;
+       // mouseY += Input.GetAxis("Mouse Y") * sensitivity;
         // Apply camera limts
-        mouseY = Mathf.Clamp(mouseY, cameraLimit.x, cameraLimit.y);
+       // mouseY = Mathf.Clamp(mouseY, cameraLimit.x, cameraLimit.y);
 
-        transform.rotation = Quaternion.Euler(-mouseY, mouseX, 0);
+       //transform.rotation = Quaternion.Euler(0, mouseX, 0);
 
     }
 }
