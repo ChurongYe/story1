@@ -8,7 +8,16 @@ public class PlayerDialogueDetector : MonoBehaviour
     public LayerMask npcLayer;
     public Transform dialoguepostion;
     private NpcEntity nearestNpc;
-
+    public AudioSource audioSource;
+    public AudioClip npc;
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
     void Update()
     {
         FindNearestNpc();
@@ -34,7 +43,7 @@ public class PlayerDialogueDetector : MonoBehaviour
             NpcEntity npc = hit.GetComponent<NpcEntity>();
             if (npc != null)
             {
-                Debug.Log($"检测到NPC: {npc.name}");
+                //Debug.Log($"检测到NPC: {npc.name}");
                 float dist = Vector3.Distance(dialoguepostion.position, npc.transform.position);
                 if (dist < minDistance)
                 {
@@ -51,8 +60,12 @@ public class PlayerDialogueDetector : MonoBehaviour
                 nearestNpc.ShowIndicator(false);
 
             if (closest != null)
+            {
                 closest.ShowIndicator(true);
-        }
+                audioSource.PlayOneShot(npc);
+            }
+
+            }
 
         // 更新引用
         nearestNpc = closest;

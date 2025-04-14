@@ -39,7 +39,7 @@ public class ThirdPersonController : MonoBehaviour
     float inputHorizontal;
     float inputVertical;
     //bool inputJump;
-    bool inputCrouch;
+    //bool inputCrouch;
     bool inputSprint;
 
     Animator animator;
@@ -60,14 +60,15 @@ public class ThirdPersonController : MonoBehaviour
     // Update is only being used here to identify keys and trigger animations
     void Update()
     {
-
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         // Input checkers
         inputHorizontal = Input.GetAxis("Horizontal");
         inputVertical = Input.GetAxis("Vertical");
         //inputJump = Input.GetAxis("Jump") == 1f;
         inputSprint = Input.GetAxis("Fire3") == 1f;
         // Unfortunately GetAxis does not work with GetKeyDown, so inputs must be taken individually
-        inputCrouch = Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.JoystickButton1);
+        //inputCrouch = Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.JoystickButton1);
 
         // Check if you pressed the crouch input key and change the player's state
         //if ( inputCrouch )

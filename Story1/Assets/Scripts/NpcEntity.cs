@@ -16,6 +16,7 @@ public class NpcEntity : MonoBehaviour
 
     private GameObject indicatorInstance;
 
+    public float eulerX = -180f;
     void Start()
     {
         if (flowchart == null)
@@ -25,7 +26,7 @@ public class NpcEntity : MonoBehaviour
 
         if (talkIndicatorPrefab != null)
         {
-            indicatorInstance = Instantiate(talkIndicatorPrefab, transform.position + indicatorOffset, Quaternion.Euler(-180f, 0f, 0f));
+            indicatorInstance = Instantiate(talkIndicatorPrefab, transform.position + indicatorOffset, Quaternion.Euler(eulerX, 90f, 0f));
             indicatorInstance.SetActive(false);
         }
     }
