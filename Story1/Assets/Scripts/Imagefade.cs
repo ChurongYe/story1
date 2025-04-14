@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 public class Imagefade : MonoBehaviour
@@ -8,10 +9,21 @@ public class Imagefade : MonoBehaviour
     public Image fadeImage;
     public float fadeDuration = 1f;
     public Button button;
+    private float timer;
+    public float targettime = 12f;
     private void Start()
     {
-        button.enabled = false;
+        timer = 0;
         StartCoroutine(FadeOut());
+    }
+    private void Update()
+    {
+        timer += Time.deltaTime;
+        if(timer> targettime)
+        {
+            button.gameObject.SetActive(true);
+            timer = 0;
+        }
     }
     IEnumerator FadeOut()
     {
@@ -33,6 +45,5 @@ public class Imagefade : MonoBehaviour
 
         color.a = to;
         fadeImage.color = color;
-        button.enabled = true;
     }
 }

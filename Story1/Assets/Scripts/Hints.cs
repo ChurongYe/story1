@@ -10,6 +10,8 @@ public class Hints : MonoBehaviour
     public int nowhint;
     public Image fadeImage;
     public float fadeDuration = 1f;
+    public AudioClip nextbutton;
+    public AudioSource audioSource;
     private void Start()
     {
         hintamounts = 3;
@@ -33,6 +35,7 @@ public class Hints : MonoBehaviour
 
     IEnumerator FadeOutAndLoadScene(string sceneName)
     {
+        audioSource.PlayOneShot(nextbutton);
         fadeImage.enabled = true;
         yield return Fade(0f, 1f);
         SceneManager.LoadScene(sceneName);
