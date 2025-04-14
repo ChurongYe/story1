@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerDialogueDetector : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerDialogueDetector : MonoBehaviour
     private NpcEntity nearestNpc;
     public AudioSource audioSource;
     public AudioClip npc;
+    public Image starth;
+    int starthint;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -17,6 +20,8 @@ public class PlayerDialogueDetector : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+        starth.enabled = false;
+        starthint = 1;
     }
     void Update()
     {
@@ -57,15 +62,19 @@ public class PlayerDialogueDetector : MonoBehaviour
         if (closest != nearestNpc)
         {
             if (nearestNpc != null)
+            {
                 nearestNpc.ShowIndicator(false);
+                starth.enabled = false;
+            }
 
             if (closest != null)
             {
                 closest.ShowIndicator(true);
                 audioSource.PlayOneShot(npc);
+                starth.enabled = true;
             }
 
-            }
+        }
 
         // 更新引用
         nearestNpc = closest;

@@ -23,7 +23,8 @@ public class Demo : MonoBehaviour
     int currentPage;
     View currentView;
 
-
+    public AudioSource audioSource;
+    public AudioClip book;
     public enum View
     {
         Book,
@@ -56,6 +57,7 @@ public class Demo : MonoBehaviour
         bookController.NextPage();
         currentPage = Mathf.Min(++currentPage, pages.Length - 1);
         StartCoroutine(UpdatePageDelayed());
+        audioSource.PlayOneShot(book);
     }
 
     void PreviousPage()
@@ -63,6 +65,7 @@ public class Demo : MonoBehaviour
         bookController.PreviousPage();
         currentPage = Mathf.Max(--currentPage, 0);
         StartCoroutine(UpdatePageDelayed());
+        audioSource.PlayOneShot(book);
     }
     
     IEnumerator UpdatePageDelayed()
