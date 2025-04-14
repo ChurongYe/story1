@@ -6,21 +6,42 @@ using UnityEngine.SceneManagement;
 
 public class Hints : MonoBehaviour
 {
-    public int hintamounts = 3;
-    public int nowhint;
+    public Image[] hintamounts;
+    private int currentHintIndex = 0;
+    public AudioClip Gou;
     public Image fadeImage;
     public float fadeDuration = 1f;
     public AudioClip nextbutton;
     public AudioSource audioSource;
+    public GameObject chair;
+    private int t;
     private void Start()
     {
-        hintamounts = 3;
-        nowhint = 0;
         StartCoroutine(FadeIn());
+        foreach (var img in hintamounts)
+        {
+            img.gameObject.SetActive(false);
+        }
+        t = 0;
     }
     public void Addhint()
     {
-        nowhint++;
+        if (currentHintIndex < hintamounts.Length)
+        {
+            hintamounts[currentHintIndex].gameObject.SetActive(true);
+            audioSource.PlayOneShot(Gou);
+            currentHintIndex++;
+        }
+        if (currentHintIndex == hintamounts.Length && t ==0)
+        {
+            audioSource.PlayOneShot(nextbutton);
+
+            if (chair != null)
+            {
+                chair.SetActive(true);
+            }
+            t++;
+        }
     }
     public void FadeToScene(string sceneName)
     {
@@ -35,7 +56,7 @@ public class Hints : MonoBehaviour
 
     IEnumerator FadeOutAndLoadScene(string sceneName)
     {
-        audioSource.PlayOneShot(nextbutton);
+        //audioSource.PlayOneShot(nextbutton);
         fadeImage.enabled = true;
         yield return Fade(0f, 1f);
         SceneManager.LoadScene(sceneName);

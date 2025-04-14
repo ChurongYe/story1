@@ -33,6 +33,7 @@ public class Demo : MonoBehaviour
 
     void Start()
     {
+        currentPage = PlayerPrefs.GetInt("CurrentPage", 0);
         UpdatePage();
 
         nextButton.onClick.AddListener(NextPage);
@@ -56,6 +57,7 @@ public class Demo : MonoBehaviour
     {
         bookController.NextPage();
         currentPage = Mathf.Min(++currentPage, pages.Length - 1);
+        PlayerPrefs.SetInt("CurrentPage", currentPage); // 保存当前页码
         StartCoroutine(UpdatePageDelayed());
         audioSource.PlayOneShot(book);
     }
@@ -64,6 +66,7 @@ public class Demo : MonoBehaviour
     {
         bookController.PreviousPage();
         currentPage = Mathf.Max(--currentPage, 0);
+        PlayerPrefs.SetInt("CurrentPage", currentPage); // 保存当前页码
         StartCoroutine(UpdatePageDelayed());
         audioSource.PlayOneShot(book);
     }
